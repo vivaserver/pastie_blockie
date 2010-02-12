@@ -1,0 +1,24 @@
+<% if @blocks.blank? %>
+  <p class="notice">There are no blockies yet.</p>
+<% else %>
+  <table id="hor-minimalist-b">
+    <tr>
+      <th>Snippet</th>
+      <th>Private?</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+    <% @blocks.each do |block| %>
+      <tr>
+        <td><pre><%= h truncate(block.snippet,10) %></pre></td>
+        <td><% if block.private %>This snippet is private.<% end %></td>
+        <td><%= link_to 'Show', block %></td>
+        <td><%= link_to 'Edit', edit_block_path(block) %></td>
+        <td><%= link_to 'Destroy', block, :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<p class="add"><%= link_to 'Create a new blockie', new_block_path %></p>

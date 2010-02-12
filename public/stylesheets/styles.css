@@ -1,0 +1,67 @@
+/* (c)2010 Diseño y Marquetación XHTML/CSS por Cristian R. Arroyo [cristian.arroyo@vivaserver.com.ar] */
+
+@import url(sen.css);
+@import url(malo.css);
+@import url(formy.css);
+
+body {
+  color: #333;
+  width: 768px;
+  margin: 0 auto;
+}
+
+a {
+  color: #000;
+}
+
+#header h1 {
+  width: 615px;
+  height: 251px;
+  margin: 0 auto;
+  background: url(logo.png) no-repeat;
+  text-indent: -9999px;
+}
+
+#container {
+}
+
+p.add {
+  text-align: center;
+}
+
+p.add a {
+  color: #000;
+  padding: 1px 0 1px 20px;
+  background: url(add.png) no-repeat;
+	text-transform: uppercase;
+}
+
+
+/* table stlying thanks to http://www.smashingmagazine.com/2008/08/13/top-10-css-table-designs/ */
+
+#hor-minimalist-b
+{
+	background: #fff;
+	margin: 45px;
+	width: 85%;
+	border-collapse: collapse;
+	text-align: left;
+}
+#hor-minimalist-b th
+{
+	font-weight: normal;
+	text-transform: uppercase;
+	color: #039;
+	padding: 10px 8px;
+	border-bottom: 2px solid #6678b1;
+}
+#hor-minimalist-b td
+{
+	border-bottom: 1px solid #ccc;
+	color: #669;
+	padding: 6px 8px;
+}
+#hor-minimalist-b tbody tr:hover td
+{
+	color: #009;
+}

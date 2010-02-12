@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Pastie Blockie: <%= controller.action_name %></title>
+  <%= stylesheet_link_tag 'scaffold',"styles" %>
+</head>
+<body>
+  <div id="header">
+    <%= link_to content_tag(:h1,'Pastie Blockie'), blocks_path %>
+  </div>
+
+  <div id="container">
+    <% unless flash.blank? %><p class="success"><%= flash[:notice] %></p><% end %>
+    <%= yield %>
+  </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<p>
+  <pre><%= h @block.snippet %></pre>
+</p>
+
+<% if @block.private %>
+  <p>
+    This code snippet is <strong>PRIVATE</strong>.
+  </p>
+<% end %>
+
+<p>
+  <%= link_to 'Edit', edit_block_path(@block) %> or <%= link_to 'Cancel', blocks_path %>  
+</p>
