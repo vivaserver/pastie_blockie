@@ -2,12 +2,13 @@
   <%= f.error_messages %>
   <fieldset>
     <legend>Create a new blockie</legend>
+    <%= f.hidden_field :signature, :value => cookies[:signature] %>
     
     <label>Anonymous code snippet (a.k.a. "blockie")</label>
     <%= f.text_area :snippet %><br />
 
     <label>Mark as private</label>
-    <%= f.check_box :private %><br />
+    <%= f.check_box :is_private %><br />
   </fieldset>
   <p>
     <%= f.submit 'Create' %> or <%= link_to 'Cancel', blocks_path %>

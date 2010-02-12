@@ -2,7 +2,7 @@ class BlocksController < ApplicationController
   # GET /blocks
   # GET /blocks.xml
   def index
-    @blocks = Block.all
+    @blocks = Block.viewable(cookies[:signature])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -47,8 +47,8 @@ class BlocksController < ApplicationController
     @block = Block.new(params[:block])
 
     respond_to do |format|
-      if @block.save
-        flash[:notice] = 'Your '+(@block.private ? '<strong>private</strong>' : 'anonymous')+' code snippet was successfully created.'
+      if @block.save        
+        flash[:notice] = 'Your '+(@block.is_private ? '<strong>private</strong>' : 'anonymous')+' code snippet was successfully created.'
         format.html { redirect_to(@block) }
         format.xml  { render :xml => @block, :status => :created, :location => @block }
       else
@@ -86,4 +86,18 @@ class BlocksController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+private
+
+  def cookie_handle()
+    if cookies[:pasties].blank?
+      pasties = [params[:id]]
+    else
+      unless YAML.load(cookies[:pasties]).include?(params[:id])
+        pasties = YAML.load(cookies[:pasties]) << params[:id]
+      end
+    end
+    cookies[:pasties] = {:value => pasties.to_yaml, :expires => 1.year.from_now}
+  end
+
 end

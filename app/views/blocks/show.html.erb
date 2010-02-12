@@ -2,9 +2,9 @@
   <pre><%= h @block.snippet %></pre>
 </p>
 
-<% if @block.private %>
+<% if @block.is_private %>
   <p>
-    This code snippet is <strong>PRIVATE</strong>.
+    This code snippet is marked as <strong>PRIVATE</strong>.
   </p>
 <% end %>
 

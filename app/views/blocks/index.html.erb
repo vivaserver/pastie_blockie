@@ -2,20 +2,19 @@
   <p class="notice">There are no blockies yet.</p>
 <% else %>
   <table id="hor-minimalist-b">
-    <tr>
-      <th>Snippet</th>
-      <th>Private?</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
     <% @blocks.each do |block| %>
       <tr>
-        <td><pre><%= h truncate(block.snippet,10) %></pre></td>
-        <td><% if block.private %>This snippet is private.<% end %></td>
+        <td><pre><%= h truncate(block.snippet,:length => 10) %></pre></td>
+        <td>
+          <%= 'This snippet is private.' if block.is_private %>
+        </td>
         <td><%= link_to 'Show', block %></td>
-        <td><%= link_to 'Edit', edit_block_path(block) %></td>
-        <td><%= link_to 'Destroy', block, :confirm => 'Are you sure?', :method => :delete %></td>
+        <td>
+          <% if block.signature == cookies[:signature] %>
+            <%= link_to('Edit', edit_block_path(block)) %> or
+            <%= link_to 'Destroy', block, :confirm => 'Are you sure?', :method => :delete %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </table>
