@@ -21,7 +21,7 @@ class BlocksController < ApplicationController
       format.html # show.html.erb
       format.xml  { render :xml => @block }
     end
-  rescue
+  rescue ActiveRecord::RecordNotFound
     render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
   end
 
@@ -29,6 +29,7 @@ class BlocksController < ApplicationController
   # GET /blocks/new.xml
   def new
     @block = Block.new
+    @revisions = @block.revisions.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -39,7 +40,7 @@ class BlocksController < ApplicationController
   # GET /blocks/1/edit
   def edit
     @block = Block.find(params[:id])
-  rescue
+  rescue ActiveRecord::RecordNotFound
     render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
   end
 
@@ -96,7 +97,7 @@ private
       flash[:error] = 'This code snippet does not belong to you.'
       redirect_to blocks_url
     end
-  rescue
+  rescue ActiveRecord::RecordNotFound
     redirect_to blocks_url
   end
 end

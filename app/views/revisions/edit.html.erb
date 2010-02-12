@@ -1,0 +1,15 @@
+<% form_for([@revision.block, @revision]) do |f| %>
+  <%= f.error_messages %>
+  <fieldset>
+    <legend>Editing your blockie</legend>
+
+    <label>Anonymous code snippet (a.k.a. "blockie")</label>
+    <%= f.text_area :snippet %><br />
+
+  </fieldset>
+  <p>
+    &larr; <%= link_to 'Go Back', block_revision_path(@revision.block, @revision) %>,
+    <%= f.submit 'Update' %> or 
+    <%= link_to 'Destroy', [@revision.block, @revision], :confirm => 'Are you sure?', :method => :delete %>
+  </p>
+<% end %>

@@ -1,11 +1,13 @@
-<% form_for(@block) do |f| %>
+<% form_for @block do |f| %>
   <%= f.error_messages %>
   <fieldset>
     <legend>Create a new blockie</legend>
     <%= f.hidden_field :signature, :value => cookies[:signature] %>
     
     <label>Anonymous code snippet (a.k.a. "blockie")</label>
-    <%= f.text_area :snippet %><br />
+    <% f.fields_for :revisions do |r| %>
+      <%= r.text_area :snippet %><br />
+    <% end %>
 
     <label>Mark as private</label>
     <%= f.check_box :is_private %><br />

@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :blocks
+  map.resources :blocks, :has_many  => :revisions
 
   # The priority is based upon order of creation: first created -> highest priority.
 
