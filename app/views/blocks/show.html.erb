@@ -9,5 +9,6 @@
 <% end %>
 
 <p>
-  <%= link_to 'Edit', edit_block_path(@block) %> or <%= link_to 'Cancel', blocks_path %>  
+  &larr; <%= link_to 'Go Back', blocks_path %>  
+  <%= 'or ' + link_to('Edit', edit_block_path(@block)) if @block.signature == cookies[:signature] %> 
 </p>

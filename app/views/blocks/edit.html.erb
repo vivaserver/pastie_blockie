@@ -10,6 +10,8 @@
     <%= f.check_box :is_private %><br />
   </fieldset>
   <p>
-    <%= f.submit 'Update' %>, <%= link_to 'Show', @block %> or <%= link_to 'Cancel', blocks_path %>
+    &larr; <%= link_to 'Cancel', blocks_path %>,
+    <%= f.submit 'Update' %> or 
+    <%= link_to 'Destroy', @block, :confirm => 'Are you sure?', :method => :delete %>
   </p>
 <% end %>
