@@ -1,4 +1,6 @@
 class BlocksController < ApplicationController
+  before_filter :authorize, :only => [:edit, :destroy]
+  
   # GET /blocks
   # GET /blocks.xml
   def index
@@ -48,7 +50,7 @@ class BlocksController < ApplicationController
 
     respond_to do |format|
       if @block.save        
-        flash[:notice] = 'Your '+(@block.is_private ? '<strong>private</strong>' : 'anonymous')+' code snippet was successfully created.'
+        flash[:success] = 'Your '+(@block.is_private ? '<strong>private</strong>' : 'anonymous')+' code snippet was successfully created.'
         format.html { redirect_to(@block) }
         format.xml  { render :xml => @block, :status => :created, :location => @block }
       else
@@ -65,7 +67,7 @@ class BlocksController < ApplicationController
 
     respond_to do |format|
       if @block.update_attributes(params[:block])
-        flash[:notice] = 'Your code snippet was successfully updated.'
+        flash[:success] = 'Your code snippet was successfully updated.'
         format.html { redirect_to(@block) }
         format.xml  { head :ok }
       else
@@ -86,18 +88,15 @@ class BlocksController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
+
 private
 
-  def cookie_handle()
-    if cookies[:pasties].blank?
-      pasties = [params[:id]]
-    else
-      unless YAML.load(cookies[:pasties]).include?(params[:id])
-        pasties = YAML.load(cookies[:pasties]) << params[:id]
-      end
+  def authorize
+    unless Block.find(params[:id]).signature == cookies[:signature]
+      flash[:error] = 'This code snippet does not belong to you.'
+      redirect_to blocks_url
     end
-    cookies[:pasties] = {:value => pasties.to_yaml, :expires => 1.year.from_now}
+  rescue
+    redirect_to blocks_url
   end
-
 end

@@ -12,7 +12,12 @@
   </div>
 
   <div id="container">
-    <% unless flash.blank? %><p class="success"><%= flash[:notice] %></p><% end %>
+    <% unless flash[:error].blank? %>
+      <p class="error"><%= flash[:error] %></p>
+    <% end %>
+    <% unless flash[:success].blank? %>
+      <p class="success"><%= flash[:success] %></p>
+    <% end %>
     <%= yield %>
   </div>
 </body>
