@@ -2,8 +2,11 @@ class Block < ActiveRecord::Base
   has_many :revisions, :dependent => :destroy, :order => 'created_at desc'
   accepts_nested_attributes_for :revisions
   
-  def self.viewable(signature)
-    find(:all, :conditions => ["is_private = ? or signature = ?", false, signature])
+  def self.viewable(signature,page=1)
+    paginate :conditions => ["is_private = ? or signature = ?", false, signature], 
+             :per_page => 5,
+             :order => 'created_at desc', 
+             :page => page
   end
   
   # used to display only snippet's latest revision on listings

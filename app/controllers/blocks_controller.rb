@@ -4,7 +4,7 @@ class BlocksController < ApplicationController
   # GET /blocks
   # GET /blocks.xml
   def index
-    @blocks = Block.viewable(cookies[:signature])
+    @blocks = Block.viewable(cookies[:signature],params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

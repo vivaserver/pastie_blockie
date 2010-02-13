@@ -30,12 +30,17 @@ p.add {
 }
 
 p.add a {
-  color: #000;
+  color: #34792F;
   padding: 1px 0 1px 20px;
   background: url(add.png) no-repeat;
+  font-weight: bold;
 	text-transform: uppercase;
+	text-decoration: none;
 }
 
+p.add a:hover {
+	text-decoration: underline;
+}
 
 /* table stlying thanks to http://www.smashingmagazine.com/2008/08/13/top-10-css-table-designs/ */
 
