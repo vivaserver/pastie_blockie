@@ -1,9 +1,9 @@
 <% if @blocks.blank? %>
   <p class="notice">There are no code snippets yet.</p>
 <% else %>
-
-<p class="add"><%= link_to 'Create a new snippet', new_block_path %></p>
-
+  <div class="flickr_pagination">    
+    <p><%= will_paginate @blocks, :prev_label => '&larr;', :next_label => '&rarr;' %></p>
+  </div>
   <table id="hor-minimalist-b">
     <% @blocks.each do |block| %>
       <tr>
@@ -17,7 +17,6 @@
       </tr>
     <% end %>
   </table>
-  <div class="flickr_pagination">    
-    <p><%= will_paginate @blocks, :prev_label => '&larr;', :next_label => '&rarr;' %></p>
-  </div>
 <% end %>
+
+<p class="add"><%= link_to 'Create a new snippet', new_block_path %></p>

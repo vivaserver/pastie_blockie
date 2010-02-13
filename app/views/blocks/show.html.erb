@@ -10,5 +10,5 @@
 
 <p>
   &larr; <%= link_to 'Go Back', blocks_path %>  
-  <%= 'or ' + link_to('Edit', edit_block_path(@block)) if @block.signature == cookies[:signature] %> 
+  <%= 'or ' + link_to('Edit', edit_block_revision_path(@block,@block.latest_revision)) if @block.signature == cookies[:signature] %> 
 </p>

@@ -43,7 +43,15 @@ class RevisionsController < ApplicationController
     @revision.destroy
 
     respond_to do |format|
-      format.html { redirect_to block_revision_path(@revision.block,@revision.block.latest_revision) }
+      format.html do 
+        if @revision.block.frozen?
+          # last revision deleted, so also it's blocks' been deleted; redirect to remaining blocks listing
+          redirect_to blocks_path
+        else
+          # some revisions left for block, redirect to latest
+          redirect_to block_revision_path(@revision.block,@revision.block.latest_revision)           
+        end
+      end
       format.xml  { head :ok }
     end
   rescue ActiveRecord::RecordNotFound
