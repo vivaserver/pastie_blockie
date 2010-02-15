@@ -28,8 +28,8 @@ class BlocksController < ApplicationController
   # GET /blocks/new
   # GET /blocks/new.xml
   def new
-    @block = Block.new
-    @revisions = @block.revisions.build
+    @block = Block.new(:language_id => 1)
+    @revision = @block.revisions.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -48,11 +48,12 @@ class BlocksController < ApplicationController
   # POST /blocks.xml
   def create
     @block = Block.new(params[:block])
+    @revision = @block.revisions.build(params[:revision])
 
     respond_to do |format|
-      if @block.save        
+      if @revision.save && @block.save        
         flash[:success] = 'Your '+(@block.is_private ? '<strong>private</strong>' : 'anonymous')+' code snippet was successfully created.'
-        format.html { redirect_to(@block) }
+        format.html { redirect_to blocks_path }
         format.xml  { render :xml => @block, :status => :created, :location => @block }
       else
         format.html { render :action => "new" }

@@ -19,3 +19,11 @@ yourself, how you think and how fast you can learn.
 
    * Log with decisions taken
    * Specs/tests
+
+# Development notes
+
+## Fixtures
+
+Populate the Language table from fixtures using:
+
+    rake db:fixtures:load FIXTURES=languages.yml

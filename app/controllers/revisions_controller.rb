@@ -24,9 +24,13 @@ class RevisionsController < ApplicationController
   # PUT /blocks/1/revisions/1
   def update
     @block = Block.find(params[:block_id])
+    @revision = @block.revisions.build(params[:revision])
 
     respond_to do |format|
-      if @block.revisions.create(params[:revision])
+      if @revision.save
+        # allow marking of private block for new snippet revision
+        @block.update_attribute(:is_private,params[:block][:is_private])
+
         flash[:success] = 'Successfully added a new revision of your snippet.'
         format.html { redirect_to block_revision_path(@block,@block.latest_revision) }
         format.xml  { head :ok }
@@ -36,6 +40,8 @@ class RevisionsController < ApplicationController
       end
     end
   end
+
+  alias :create :update
 
   # DELETE /blocks/1/revisions/1
   def destroy

@@ -1,17 +1,21 @@
 <% form_for @block do |f| %>
-  <%= f.error_messages %>
-  <fieldset>
-    <legend>Create a new blockie</legend>
+  <%= error_messages_for :revision %>
+  
+  <% field_set_tag 'Create a new blockie' do %>
     <%= f.hidden_field :signature, :value => cookies[:signature] %>
     
+    <label>Language</label>
+    <%= f.select :language_id, Language.find(:all, :order => 'name').collect {|l| [l.name, l.id] } %>
+    
     <label>Anonymous code snippet (a.k.a. "blockie")</label>
-    <% f.fields_for :revisions do |r| %>
+    <% fields_for @revision do |r| %>
       <%= r.text_area :snippet %><br />
     <% end %>
 
     <label>Mark as private</label>
     <%= f.check_box :is_private %><br />
-  </fieldset>
+  <% end %>
+  
   <p>
     &larr; <%= link_to 'Go Back', blocks_path %> or <%= f.submit 'Create' %>
   </p>

@@ -1,0 +1,32 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: C/C++
+
+nine:
+  name: HTML
+
+two:
+  name: Java
+
+ten:
+  name: JavaScript
+
+three:
+  name: Perl
+
+four:
+  name: PHP
+
+five:
+  name: Python
+    
+six:
+  name: Rails
+
+seven:
+  name: Ruby
+
+eight:
+  id: 1
+  name: Other

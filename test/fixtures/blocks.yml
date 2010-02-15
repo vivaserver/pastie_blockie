@@ -1,9 +1,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  snippet: MyText
-  private: false
+  is_private: false
 
 two:
-  snippet: MyText
-  private: false
+  is_private: false

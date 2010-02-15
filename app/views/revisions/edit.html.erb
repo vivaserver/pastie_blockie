@@ -1,15 +1,23 @@
 <% form_for([@revision.block, @revision]) do |f| %>
   <%= f.error_messages %>
-  <fieldset>
-    <legend>Editing your blockie</legend>
+
+  <% field_set_tag 'Editing your blockie' do %>
+    <label>
+      Language :
+      <strong><%= @revision.block.language.name %></strong>
+    </label>
 
     <label>Anonymous code snippet (a.k.a. "blockie")</label>
     <%= f.text_area :snippet %><br />
+    
+    <% fields_for @revision.block do |b| %>
+      <label>Mark as private</label>
+      <%= b.check_box :is_private %><br />
+    <% end %>
+  <% end %>
 
-  </fieldset>
   <p>
-    &larr; <%= link_to 'Go Back', block_revision_path(@revision.block, @revision) %>,
-    <%= f.submit 'Update' %> or 
-    <%= link_to 'Destroy', [@revision.block, @revision], :confirm => 'Are you sure?', :method => :delete %>
+    &larr; <%= link_to_function 'Go Back', "history.back()" %>,
+    <%= f.submit 'Update' %>
   </p>
 <% end %>

@@ -1,6 +1,6 @@
 class Block < ActiveRecord::Base
+  belongs_to :language
   has_many :revisions, :dependent => :destroy, :order => 'created_at desc'
-  accepts_nested_attributes_for :revisions
   
   def self.viewable(signature,page=1)
     paginate :conditions => ["is_private = ? or signature = ?", false, signature], 
@@ -12,10 +12,5 @@ class Block < ActiveRecord::Base
   # used to display only snippet's latest revision on listings
   def latest_revision
     revisions.first
-  end
-  
-  # used only to create the first revision for a new snippet
-  def revisions_attributes(attributes)
-    revisions.create.attributes.first
   end
 end

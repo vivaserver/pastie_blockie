@@ -42,6 +42,10 @@ p.add a:hover {
 	text-decoration: underline;
 }
 
+strong {
+	text-transform: uppercase;
+}
+
 /* table stlying thanks to http://www.smashingmagazine.com/2008/08/13/top-10-css-table-designs/ */
 
 #hor-minimalist-b
