@@ -1,5 +1,5 @@
 class Revision < ActiveRecord::Base
-  validates_presence_of :snippet, :message => "can't be blank"
+  validates_presence_of :snippet
   belongs_to :block
 
 protected

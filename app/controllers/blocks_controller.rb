@@ -1,5 +1,5 @@
 class BlocksController < ApplicationController
-  before_filter :authorize, :only => [:edit, :destroy]
+  before_filter :authorize, :only => [:show, :edit, :destroy]
   
   # GET /blocks
   # GET /blocks.xml
@@ -8,7 +8,7 @@ class BlocksController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @blocks }
+      format.xml
     end
   end
 
@@ -16,13 +16,11 @@ class BlocksController < ApplicationController
   # GET /blocks/1.xml
   def show
     @block = Block.find(params[:id])
-
+    
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @block }
+      format.xml
     end
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
   end
 
   # GET /blocks/new
@@ -48,10 +46,9 @@ class BlocksController < ApplicationController
   # POST /blocks.xml
   def create
     @block = Block.new(params[:block])
-    @revision = @block.revisions.build(params[:revision])
 
     respond_to do |format|
-      if @revision.save && @block.save        
+      if @block.save        
         flash[:success] = 'Your '+(@block.is_private ? '<strong>private</strong>' : 'anonymous')+' code snippet was successfully created.'
         format.html { redirect_to blocks_path }
         format.xml  { render :xml => @block, :status => :created, :location => @block }
@@ -94,11 +91,17 @@ class BlocksController < ApplicationController
 private
 
   def authorize
-    unless Block.find(params[:id]).signature == cookies[:signature]
-      flash[:error] = 'This code snippet does not belong to you.'
-      redirect_to blocks_url
+    @block = Block.find(params[:id])
+    
+    if @block.is_private && @block.signature != cookies[:signature]
+      respond_to do |format|
+        format.html { render :file => "#{RAILS_ROOT}/public/401.html", :status => :unauthorized }
+        format.xml do 
+          @block.errors.add_to_base('Unauthorized') # just to have some message to show
+          render :xml => @block.errors, :status => :unauthorized 
+        end
+      end
     end
-  rescue ActiveRecord::RecordNotFound
-    redirect_to blocks_url
   end
+
 end

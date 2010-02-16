@@ -5,10 +5,10 @@
     <%= f.hidden_field :signature, :value => cookies[:signature] %>
     
     <label>Language</label>
-    <%= f.select :language_id, Language.find(:all, :order => 'name').collect {|l| [l.name, l.id] } %>
+    <%= f.collection_select :language_id, Language.find(:all, :order => 'name'), :id, :name %>
     
     <label>Anonymous code snippet (a.k.a. "blockie")</label>
-    <% fields_for @revision do |r| %>
+    <% f.fields_for :revisions do |r| %>
       <%= r.text_area :snippet %><br />
     <% end %>
 

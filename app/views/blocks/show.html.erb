@@ -1,0 +1,27 @@
+<p>
+  Language: <strong><%= @block.language.name %></strong>
+</p>
+
+<p>
+  <br /><pre><%= h @block.latest_revision.snippet %></pre>
+</p>
+
+<% if @block.is_private %>
+  <p>
+    This code snippet is marked as <strong>private</strong>.
+  </p>
+<% end %>
+
+<% unless @block.revisions.empty? || @block.revisions.size == 1 %>
+  <p><br />Previous revisions of this snippet:</p>
+  <ul>
+    <% @block.revisions.each do |revision| %>
+      <li><%= link_to_unless_current revision.created_at, block_revision_path(@block, revision) %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<p>
+  &larr; <%= link_to 'Go Back', blocks_path %>  
+  <%= 'or ' + link_to('Edit', edit_block_revision_path(@block,@block.latest_revision)) if @block.signature == cookies[:signature] %> 
+</p>
