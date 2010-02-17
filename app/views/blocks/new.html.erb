@@ -2,8 +2,6 @@
   <%= error_messages_for :revision %>
   
   <% field_set_tag 'Create a new blockie' do %>
-    <%= f.hidden_field :signature, :value => cookies[:signature] %>
-    
     <label>Language</label>
     <%= f.collection_select :language_id, Language.find(:all, :order => 'name'), :id, :name %>
     

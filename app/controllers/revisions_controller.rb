@@ -1,5 +1,5 @@
 class RevisionsController < ApplicationController
-  before_filter :authorize, :only => [:edit, :destroy]
+  before_filter :authorize, :only => [:show, :edit, :destroy]
   
   # GET /blocks/1/revisions/1
   def show
@@ -8,10 +8,8 @@ class RevisionsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @revision }
+      format.xml
     end
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
   end
 
   # GET /blocks/1/revisions/1/edit
@@ -28,19 +26,17 @@ class RevisionsController < ApplicationController
 
     respond_to do |format|
       if @revision.save
-        # allow marking of private block for new snippet revision
-        @block.update_attribute(:is_private,params[:block][:is_private])
-
         flash[:success] = 'Successfully added a new revision of your snippet.'
         format.html { redirect_to block_revision_path(@block,@block.latest_revision) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @block.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @revision.errors, :status => :unprocessable_entity }
       end
     end
   end
 
+  # updates just create new revisions
   alias :create :update
 
   # DELETE /blocks/1/revisions/1
@@ -58,20 +54,30 @@ class RevisionsController < ApplicationController
           redirect_to block_revision_path(@revision.block,@revision.block.latest_revision)           
         end
       end
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
   end
 
 private
 
   def authorize
-    unless Block.find(params[:block_id]).signature == cookies[:signature]
-      flash[:error] = 'This code snippet does not belong to you.'
-      redirect_to blocks_url
+    @block = Block.find(params[:block_id])
+    @revision = @block.revisions.find(params[:id])
+
+    if (action_name=='show' && @block.is_private && @block.signature != cookies[:signature]) || ((action_name=='destroy' || action_name=='update') && @block.signature != cookies[:signature])
+      respond_to do |format|
+        format.html { render :file => "#{RAILS_ROOT}/public/401.html", :status => :unauthorized }
+        format.xml do 
+          @block.errors.add_to_base('Unauthorized') # just to have some message to show
+          render :xml => @block.errors, :status => :unauthorized 
+        end
+      end
     end
   rescue ActiveRecord::RecordNotFound
-    redirect_to blocks_url
+    respond_to do |format|
+      format.html { render :file => "#{RAILS_ROOT}/public/404.html", :status => 404 }
+      format.xml  { head 404 }
+    end
   end
+
 end

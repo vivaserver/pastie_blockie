@@ -8,12 +8,7 @@
     </label>
 
     <label>Anonymous code snippet (a.k.a. "blockie")</label>
-    <%= f.text_area :snippet %><br />
-    
-    <% fields_for @revision.block do |b| %>
-      <label>Mark as private</label>
-      <%= b.check_box :is_private %><br />
-    <% end %>
+    <%= f.text_area :snippet %><br />    
   <% end %>
 
   <p>

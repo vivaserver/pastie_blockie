@@ -15,7 +15,7 @@ class Block < ActiveRecord::Base
     revisions.first
   end
   
-  # used only to create the first revision for a new snippet
+  # used only to create the first revision for a new block
   def revisions_attributes(attributes)
     revisions.create.attributes.first
   end

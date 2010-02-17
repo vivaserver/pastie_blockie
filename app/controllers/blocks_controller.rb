@@ -1,5 +1,5 @@
 class BlocksController < ApplicationController
-  before_filter :authorize, :only => [:show, :edit, :destroy]
+  before_filter :authorize, :only => [:show, :destroy]
   
   # GET /blocks
   # GET /blocks.xml
@@ -35,17 +35,12 @@ class BlocksController < ApplicationController
     end
   end
 
-  # GET /blocks/1/edit
-  def edit
-    @block = Block.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
-  end
-
   # POST /blocks
   # POST /blocks.xml
   def create
-    @block = Block.new(params[:block])
+    # sign the new block with the user's cookie to restrict further editing
+    # (moved from the form .erb view to also work with REST requests)
+    @block = Block.new(params[:block].merge({:signature => cookies[:signature]}))
 
     respond_to do |format|
       if @block.save        
@@ -54,23 +49,6 @@ class BlocksController < ApplicationController
         format.xml  { render :xml => @block, :status => :created, :location => @block }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @block.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # PUT /blocks/1
-  # PUT /blocks/1.xml
-  def update
-    @block = Block.find(params[:id])
-
-    respond_to do |format|
-      if @block.update_attributes(params[:block])
-        flash[:success] = 'Your code snippet was successfully updated.'
-        format.html { redirect_to(@block) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
         format.xml  { render :xml => @block.errors, :status => :unprocessable_entity }
       end
     end
@@ -93,7 +71,7 @@ private
   def authorize
     @block = Block.find(params[:id])
     
-    if @block.is_private && @block.signature != cookies[:signature]
+    if (action_name=='show' && @block.is_private && @block.signature != cookies[:signature]) || (action_name=='destroy' && @block.signature != cookies[:signature])
       respond_to do |format|
         format.html { render :file => "#{RAILS_ROOT}/public/401.html", :status => :unauthorized }
         format.xml do 
@@ -101,6 +79,11 @@ private
           render :xml => @block.errors, :status => :unauthorized 
         end
       end
+    end
+  rescue ActiveRecord::RecordNotFound
+    respond_to do |format|
+      format.html { render :file => "#{RAILS_ROOT}/public/404.html", :status => 404 }
+      format.xml  { head 404 }
     end
   end
 
