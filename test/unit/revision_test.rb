@@ -1,8 +1,11 @@
 require 'test_helper'
 
 class RevisionTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+
+  test "deleting last revision also deletes related block" do
+    revision = revisions(:public_rev)
+    revision.destroy
+    assert revision.block.destroyed?
   end
+
 end

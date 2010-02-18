@@ -1,9 +1,13 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  block_id: 1
-  snippet: MyText
+private_rev1:
+  block: private
+  snippet: code snippet goes here
 
-two:
-  block_id: 1
-  snippet: MyText
+private_rev2:
+  block: private
+  snippet: more code snippet goes here
+
+public_rev:
+  block: public
+  snippet: rails pastie --git --database=sqlite3
