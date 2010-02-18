@@ -11,4 +11,8 @@ class BlockTest < ActiveSupport::TestCase
     assert_equal Block.viewable('non_existing_cookie').size, 1
   end
 
+  test "any block always includes one latest revision" do
+    assert_kind_of Revision, blocks(:public).latest_revision
+  end
+
 end

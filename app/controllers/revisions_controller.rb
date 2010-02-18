@@ -15,8 +15,6 @@ class RevisionsController < ApplicationController
   # GET /blocks/1/revisions/1/edit
   def edit
     @revision = Revision.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
   end
 
   # PUT /blocks/1/revisions/1

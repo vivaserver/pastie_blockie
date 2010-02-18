@@ -1,8 +1,8 @@
 require 'test_helper'
 
 class RevisionsControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
-  end
+  # test "should update block" do
+  #   put :update, :id => blocks(:one).to_param, :block => { }
+  #   assert_redirected_to block_path(assigns(:block))
+  # end
 end

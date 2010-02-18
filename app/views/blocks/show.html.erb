@@ -2,9 +2,11 @@
   Language: <strong><%= @block.language.name %></strong>
 </p>
 
-<p>
-  <br /><pre><%= h @block.latest_revision.snippet %></pre>
-</p>
+<% unless @block.latest_revision.snippet.blank? %>
+  <p>
+    <br /><pre><%= h @block.latest_revision.snippet %></pre>
+  </p>
+<% end %>
 
 <% if @block.is_private %>
   <p>

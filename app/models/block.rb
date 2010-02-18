@@ -1,4 +1,5 @@
 class Block < ActiveRecord::Base
+  validates_presence_of :signature
   belongs_to :language
   has_many :revisions, :dependent => :destroy, :order => 'created_at desc'
   accepts_nested_attributes_for :revisions

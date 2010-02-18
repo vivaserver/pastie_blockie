@@ -1,5 +1,5 @@
 class BlocksController < ApplicationController
-  before_filter :authorize, :only => [:show, :destroy]
+  before_filter :authorize, :only => [:show, :edit, :destroy]
   
   # GET /blocks
   # GET /blocks.xml
@@ -21,6 +21,13 @@ class BlocksController < ApplicationController
       format.html # show.html.erb
       format.xml
     end
+  end
+
+  # GET /blocks/1/edit
+  def edit
+    # probably not the wisest thing to do, but trying to edit a block redirects to the editing of it's latest revision
+    # more business logic specifications needed?
+    redirect_to edit_block_revision_path(@block,@block.latest_revision)
   end
 
   # GET /blocks/new
@@ -71,7 +78,7 @@ private
   def authorize
     @block = Block.find(params[:id])
     
-    if (action_name=='show' && @block.is_private && @block.signature != cookies[:signature]) || (action_name=='destroy' && @block.signature != cookies[:signature])
+    if (action_name=='show' && @block.is_private && @block.signature != cookies[:signature]) || (action_name=='edit' && @block.signature != cookies[:signature]) || (action_name=='destroy' && @block.signature != cookies[:signature])
       respond_to do |format|
         format.html { render :file => "#{RAILS_ROOT}/public/401.html", :status => :unauthorized }
         format.xml do 

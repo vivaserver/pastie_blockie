@@ -32,3 +32,7 @@ rb:
 
 other:
   name: Other
+
+misc:
+  id: 1
+  name: Miscelaneous
