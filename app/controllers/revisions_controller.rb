@@ -34,7 +34,7 @@ class RevisionsController < ApplicationController
     end
   end
 
-  # updates just create new revisions
+  # updates just create new revisions, to keep the old
   alias :create :update
 
   # DELETE /blocks/1/revisions/1
@@ -44,7 +44,7 @@ class RevisionsController < ApplicationController
 
     respond_to do |format|
       format.html do 
-        if @revision.block.frozen?
+        if @revision.block.destroyed?
           # last revision deleted, so also it's blocks' been deleted; redirect to remaining blocks listing
           redirect_to blocks_path
         else
@@ -62,7 +62,7 @@ private
     @block = Block.find(params[:block_id])
     @revision = @block.revisions.find(params[:id])
 
-    if (action_name=='show' && @block.is_private && @block.signature != cookies[:signature]) || ((action_name=='destroy' || action_name=='update') && @block.signature != cookies[:signature])
+    if (action_name=='show' && @block.is_private && @block.signature != cookies[:signature]) || ((action_name=='destroy' || action_name=='edit' || action_name=='update' || action_name=='create') && @block.signature != cookies[:signature])
       respond_to do |format|
         format.html { render :file => "#{RAILS_ROOT}/public/401.html", :status => :unauthorized }
         format.xml do 

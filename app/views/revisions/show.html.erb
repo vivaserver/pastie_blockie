@@ -14,7 +14,7 @@
 
 <% unless @block.revisions.empty? || @block.revisions.size == 1 %>
   <p><br />Previous revisions of this snippet:</p>
-  <ul>
+  <ul id="revs">
     <% @block.revisions.each do |revision| %>
       <li><%= link_to_unless_current revision.created_at, block_revision_path(@block, revision) %></li>
     <% end %>

@@ -21,6 +21,25 @@ class BlocksControllerTest < ActionController::TestCase
     assert_select 'table tr', 2
   end
   
+  # tests for showing
+  
+  test "trying to show a non-existing block renders a 404 error" do
+    get :show, :id => 1234567890
+    assert_response 404
+  end
+
+  test "do not show private blocks to non-owners" do
+    get :show, :id => blocks(:private).to_param
+    assert_response :unauthorized
+  end
+  
+  test "always show block along it's latest revision" do
+    get :show, :id => blocks(:public).to_param
+    assert_response :success
+    assert_not_nil assigns(:block)
+    assert_select 'pre'
+  end
+  
   # tests for creating
 
   test "creation of a block should allow the entering of it's first revision" do
@@ -38,25 +57,6 @@ class BlocksControllerTest < ActionController::TestCase
       post :create, :block => { :language_id => 1, :is_private => 0, :revisions_attributes => [:snippet => 'some code snippet'] }
     end
     assert_redirected_to blocks_path
-  end
-  
-  # tests for showing
-
-  test "do not show private blocks to non-owners" do
-    get :show, :id => blocks(:private).to_param
-    assert_response :unauthorized
-  end
-  
-  test "trying to show a non-exising block renders a 404 error" do
-    get :show, :id => 1234567890
-    assert_response 404
-  end
-  
-  test "always show block along it's latest revision" do
-    get :show, :id => blocks(:public).to_param
-    assert_response :success
-    assert_not_nil assigns(:block)
-    assert_select 'pre'
   end
 
   # tests for editing
